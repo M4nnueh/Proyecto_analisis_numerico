@@ -1,0 +1,163 @@
+<app-header></app-header>
+
+<main class="bg-white py-5">
+  <div class="container">
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-10 text-center">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="lead text-muted">Gestión general y métricas de usuarios en NumTech Academy.</p>
+        <button class="btn btn-primary mt-2" (click)="cargarEstadisticas()" [disabled]="isLoading">
+          <i class="fas" [ngClass]="{'fa-sync-alt': true, 'fa-spin': isLoading}"></i> Actualizar
+        </button>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+      <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMessage }}
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2 text-muted">Cargando estadísticas...</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!isLoading && !errorMessage && stats">
+      
+      <!-- KPIs Cards -->
+      <div class="row g-4 justify-content-center mb-5">
+        <div class="col-md-3">
+          <div class="card h-100 shadow-sm border-0 text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-users fa-3x text-primary"></i>
+            </div>
+            <h4 class="fw-bold">Total Usuarios</h4>
+            <h2 class="display-4 text-primary">{{ stats.totalUsuarios }}</h2>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 shadow-sm border-0 text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-user-graduate fa-3x text-success"></i>
+            </div>
+            <h4 class="fw-bold">Estudiantes</h4>
+            <h2 class="display-4 text-success">{{ stats.totalEstudiantes }}</h2>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 shadow-sm border-0 text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-chalkboard-teacher fa-3x text-info"></i>
+            </div>
+            <h4 class="fw-bold">Profesores</h4>
+            <h2 class="display-4 text-info">{{ stats.totalProfesores }}</h2>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card h-100 shadow-sm border-0 text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-user-shield fa-3x text-warning"></i>
+            </div>
+            <h4 class="fw-bold">Administradores</h4>
+            <h2 class="display-4 text-warning">{{ stats.totalAdmins }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficas -->
+      <div class="row g-4 mb-5">
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 p-3">
+            <div class="card-body">
+              <h5 class="text-center fw-bold mb-4">Distribución por Rol</h5>
+              <div style="position: relative; height: 300px; width: 100%;">
+                <canvas #pieChartCanvas></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 p-3">
+            <div class="card-body">
+              <h5 class="text-center fw-bold mb-4">Usuarios por Rol</h5>
+              <div style="position: relative; height: 300px; width: 100%;">
+                <canvas #barChartCanvas></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Últimos Registros -->
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-bottom p-3">
+          <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-history me-2"></i> Actividad Reciente</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0 text-center">
+              <thead class="bg-light">
+                <tr>
+                  <th class="py-3">Usuario</th>
+                  <th class="py-3">Correo</th>
+                  <th class="py-3">Rol</th>
+                  <th class="py-3">Fecha de Registro</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let u of stats.ultimosUsuarios">
+                  <td class="py-3 fw-bold">{{ u.nombre }}</td>
+                  <td class="py-3 text-muted">{{ u.email }}</td>
+                  <td class="py-3">
+                    <span class="badge bg-secondary px-3 py-2" [ngClass]="{
+                      'bg-success': u.rol === 'estudiante',
+                      'bg-info': u.rol === 'profesor',
+                      'bg-warning': u.rol === 'administrador'
+                    }">
+                      {{ u.rol | titlecase }}
+                    </span>
+                  </td>
+                  <td class="py-3 text-muted">{{ u.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+                </tr>
+                <tr *ngIf="stats.ultimosUsuarios.length === 0">
+                  <td colspan="4" class="py-4 text-muted">No hay registros recientes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer mt-auto py-4 bg-dark text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-graduation-cap fa-2x"></i>
+          <span class="fs-4">NumTech Academy</span>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Redes sociales</h5>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Contacto</h5>
+        <p>Tel: +1 222 333 4444<br>Email: info@numtechacademy.com<br>Dir: Calle Falsa 123, Ciudad</p>
+      </div>
+    </div>
+  </div>
+</footer>

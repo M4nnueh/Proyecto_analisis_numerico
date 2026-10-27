@@ -1,0 +1,55 @@
+<app-header></app-header>
+
+<main class="bg-white py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-5 text-center">
+            <h2 class="mb-2 fw-bold">Crear cuenta</h2>
+            <p class="text-muted mb-4">El registro se realiza a través de nuestro sistema de autenticación seguro.</p>
+
+            <button 
+              class="btn btn-cafe w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2" 
+              (click)="registrarse()"
+            >
+              <i class="fas fa-user-plus"></i>
+              Registrarse con Keycloak
+            </button>
+
+            <!-- Link al login -->
+            <p class="mt-3 mb-0 small">
+              ¿Ya tienes una cuenta? <a routerLink="/login" class="fw-semibold text-decoration-none" style="color: #8B4513;">Inicia sesión aquí</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer mt-auto py-4 bg-dark text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-graduation-cap fa-2x"></i>
+          <span class="fs-4">NumTech Academy</span>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Redes sociales</h5>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Contacto</h5>
+        <p>Tel: +1 222 333 4444<br>Email: info@numtechacademy.com<br>Dir: Calle Falsa 123, Ciudad</p>
+      </div>
+    </div>
+  </div>
+</footer>

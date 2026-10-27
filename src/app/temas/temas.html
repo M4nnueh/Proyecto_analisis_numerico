@@ -1,0 +1,60 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="display-5 fw-bold text-primary">
+      <i class="fas fa-book-open me-2"></i> Gestión de Temas
+    </h1>
+    <button (click)="volver()" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left me-2"></i> Volver al Dashboard
+    </button>
+  </div>
+
+  <!-- Cursos integration -->
+  <div class="row mb-5 justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 text-center p-4">
+          <div class="mb-3">
+            <i class="fas fa-book fa-3x text-warning"></i>
+          </div>
+          <h4 class="fw-bold">Mis Cursos</h4>
+          <p class="text-muted">Accede a tus cursos disponibles.</p>
+          <div class="mt-auto">
+            <div class="dropdown">
+              <button class="btn btn-warning w-100 dropdown-toggle" data-bs-toggle="dropdown" [disabled]="isLoadingCursos">
+                <span *ngIf="isLoadingCursos" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isLoadingCursos ? 'Cargando...' : 'Ver Cursos' }}
+              </button>
+              <ul class="dropdown-menu w-100 text-center">
+                <li *ngIf="cursos.length === 0 && !isLoadingCursos">
+                  <span class="dropdown-item text-muted">No estás inscrito en ningún curso.</span>
+                </li>
+                <li *ngFor="let curso of cursos">
+                  <a [routerLink]="curso.urlRuta" class="dropdown-item">{{ curso.nombre }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <!-- Lista de temas como botones -->
+    <div class="col-md-10">
+      <h3 class="fw-bold text-center mb-4">Temas Disponibles</h3>
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let tema of temas()">
+           <a [routerLink]="['/temas', tema.id]" class="btn btn-outline-primary w-100 p-4 h-100 fw-bold shadow-sm d-flex flex-column align-items-center justify-content-center text-decoration-none">
+              <i class="fas fa-file-alt fa-2x mb-3"></i>
+              <span class="fs-5">{{ tema.titulo }}</span>
+           </a>
+        </div>
+        
+        <div *ngIf="temas().length === 0" class="col-12 text-center">
+          <div class="alert alert-info" role="alert">
+            No hay temas registrados.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
